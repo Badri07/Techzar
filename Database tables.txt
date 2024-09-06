@@ -1,0 +1,17 @@
+CREATE TABLE Department (
+    DepartmentId SERIAL PRIMARY KEY,
+    DepartmentName VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Course (
+    CourseId SERIAL PRIMARY KEY,
+    CourseName VARCHAR(100) NOT NULL,
+    DepartmentId INT REFERENCES Department(DepartmentId)
+);
+
+CREATE TABLE Student (
+    StudentId SERIAL PRIMARY KEY,
+    StudentName VARCHAR(100) NOT NULL,
+    DepartmentId INT REFERENCES Department(DepartmentId),
+    CourseId INT REFERENCES Course(CourseId)
+);
