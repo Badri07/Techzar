@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Techzar.Models.Course>
+
+@{
+    ViewData["Title"] = "Courses";
+}
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Course Name
+            </th>
+            <th>
+                Department
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Coursename)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.Departmentname)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Courseid">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Courseid">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

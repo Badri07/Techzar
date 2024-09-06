@@ -1,0 +1,70 @@
+﻿@model Techzar.Models.Student
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Studentname" class="control-label">Student Name</label>
+                <input asp-for="Studentname" class="form-control" />
+                <span asp-validation-for="Studentname" class="text-danger"></span>
+            </div>
+            <!-- Department Dropdown -->
+            <div class="form-group">
+                <label asp-for="Departmentid" class="control-label">Department</label>
+                <select asp-for="Departmentid" class="form-control" id="departmentDropdown">
+                    <option value="">Select</option>
+                    @foreach (var department in ViewBag.Departments as IEnumerable<SelectListItem>)
+                    {
+                        <option value="@department.Value">@department.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="Departmentid" class="text-danger"></span>
+            </div>
+
+            <!-- Course Dropdown -->
+            <div class="form-group">
+                <label asp-for="Courseid" class="control-label">Course</label>
+                <select asp-for="Courseid" class="form-control" id="courseDropdown">
+                    <option value="">Select</option>
+                </select>
+                <span asp-validation-for="Courseid" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary mt-3" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#departmentDropdown').change(function () {
+                var departmentId = $(this).val();
+                var $courseDropdown = $('#courseDropdown');
+                $courseDropdown.empty();
+                $courseDropdown.append('<option value="">Select</option>');
+
+                if (departmentId) {
+                    $.ajax({
+                        url: '@Url.Action("GetCoursesByDepartment", "Students")',
+                        data: { departmentId: departmentId },
+                        success: function (data) {
+                            $.each(data, function (index, item) {
+                                $courseDropdown.append('<option value="' + item.value + '">' + item.text + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
